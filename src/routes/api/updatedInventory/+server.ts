@@ -1,33 +1,33 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import path from 'path';
 import { readFile, writeFile } from 'fs/promises';
-import type { User } from '$lib/types'; // Make sure you have the correct type for User
+import type { User } from '$lib/types'; // Make sure you have the correct type for Person
 
 const usersPath = path.resolve('static/data/users.json');  // Path to your users.json
 
 export const POST: RequestHandler = async ({ request }) => {
     try {
-        // Get the userId and updated inventory from the request body
+       //Gets the userId and the current inventory from the request body
         const { userId, inventory } = await request.json();
 
-        // Read the user data from the users.json file
+        //reads the users.json file to see what is currently stored
         const userFile = await readFile(usersPath, 'utf-8');
         const userData: User[] = JSON.parse(userFile);
 
-        // Find the user to update
+        //Finds the user based on id
         const user = userData.find((user) => user.id === userId);
 
         if (!user) {
             return new Response(
-                JSON.stringify({ error: 'User not found.' }),
+                JSON.stringify({ error: 'Person not found.' }),
                 { status: 404, headers: { 'Content-Type': 'application/json' } }
             );
         }
 
-        // Update the user's inventory
+   //Updates the inventory after a purchase or after an action
         user.inventory = inventory;
 
-        // Write the updated data back to the users.json file
+        //Re - writes the users.json file with new data
         await writeFile(usersPath, JSON.stringify(userData, null, 2));
 
         return new Response(
