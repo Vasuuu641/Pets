@@ -1,13 +1,13 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import path from 'path';
 import { readFile, writeFile } from 'fs/promises';
+import type { User, Pet } from '$lib/types'; // Import relevant types
 
 const usersPath = path.resolve('static/data/users.json');
 const petsPath = path.resolve('static/data/pets.json');
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
-		// Parse incoming request body
 		const { petId, userId } = await request.json();
 
 		// Validate the userId and petId
@@ -20,13 +20,13 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		// Load users and pets data
 		const usersData = await readFile(usersPath, 'utf-8');
-		const users = JSON.parse(usersData);
+		const users: User[] = JSON.parse(usersData); // Use the User type
 		const petsData = await readFile(petsPath, 'utf-8');
-		const pets = JSON.parse(petsData);
+		const pets: Pet[] = JSON.parse(petsData); // Use the Pet type
 
 		// Find the user and pet
-		const user = users.find((user: any) => user.id === userId);
-		const pet = pets.find((pet: any) => pet.id === petId);
+		const user = users.find((user: User) => user.id === userId);
+		const pet = pets.find((pet: Pet) => pet.id === petId);
 
 		if (!user) {
 			return new Response(
@@ -42,10 +42,18 @@ export const POST: RequestHandler = async ({ request }) => {
 			);
 		}
 
-		// If the pet is already adopted, respond accordingly
+		// If the pet is already adopted, return already adopted message
 		if (pet.adopted) {
 			return new Response(
 				JSON.stringify({ error: 'This pet has already been adopted.' }),
+				{ status: 400, headers: { 'Content-Type': 'application/json' } }
+			);
+		}
+
+		// If a user has adopted the pet, disable the adopt button and show adopted sign next to the pet name
+		if (user.adoptedPets.includes(petId)) {
+			return new Response(
+				JSON.stringify({ error: 'User has already adopted this pet.' }),
 				{ status: 400, headers: { 'Content-Type': 'application/json' } }
 			);
 		}
@@ -54,21 +62,22 @@ export const POST: RequestHandler = async ({ request }) => {
 		pet.adopted = true;
 		pet.adoptedBy = userId;
 
+
 		// Update the pet list in the pets.json file
 		await writeFile(petsPath, JSON.stringify(pets, null, 2));
 
-		// Update the user’s adopted pets list
-		user.adoptedPets = user.adoptedPets || [];
+		// Add the pet to the user's adopted pets list
 		user.adoptedPets.push(petId);
 
 		// Update the user list in the users.json file
 		await writeFile(usersPath, JSON.stringify(users, null, 2));
 
-		// Return success response
+
 		return new Response(
 			JSON.stringify({ message: 'Pet adopted successfully.' }),
 			{ status: 200, headers: { 'Content-Type': 'application/json' } }
 		);
+
 	} catch (err) {
 		console.error('Error during adoption:', err);
 		return new Response(
@@ -77,5 +86,3 @@ export const POST: RequestHandler = async ({ request }) => {
 		);
 	}
 };
-
-
