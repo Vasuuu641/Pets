@@ -6,6 +6,7 @@ import type { User } from '$lib/types';
 const usersPath = path.resolve('static/data/users.json');
 
 export const GET: RequestHandler = async ({ url }) => {
+
     // Extract userId from query parameters
     const userId = parseInt(url.searchParams.get('userId') || '', 10);
 
@@ -25,7 +26,7 @@ export const GET: RequestHandler = async ({ url }) => {
 
     if (!user) {
         return new Response(
-            JSON.stringify({ error: 'User not found.' }),
+            JSON.stringify({ error: 'Person not found.' }),
             { status: 404, headers: { 'Content-Type': 'application/json' } }
         );
     }
