@@ -27,9 +27,11 @@
         }
     }
 
-	async function adopt(petId: number) {
-        // TODO only let the user adopt if they are signed in.
-	}
+    async function adopt(petId: number) {
+        if (!user) {
+            goto('/login');
+            return;
+        }
 
         try {
             const res = await fetch('/api/adopt', {
