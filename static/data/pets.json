@@ -1,2 +1,74 @@
 [
+  {
+    "id": 1,
+    "name": "Bella",
+    "type": "kitten",
+    "hunger": 80,
+    "happiness": 20,
+    "adopted": true,
+    "adoptedBy": 3
+  },
+  {
+    "id": 2,
+    "name": "Lassie",
+    "type": "puppy",
+    "hunger": 0,
+    "happiness": 100,
+    "adopted": true,
+    "adoptedBy": 2
+  },
+  {
+    "id": 3,
+    "name": "Tiger",
+    "type": "puppy",
+    "hunger": 0,
+    "happiness": 100,
+    "adopted": true,
+    "adoptedBy": 2
+  },
+  {
+    "id": 4,
+    "name": "Blackie",
+    "type": "puppy",
+    "hunger": 80,
+    "happiness": 20,
+    "adopted": true,
+    "adoptedBy": 3
+  },
+  {
+    "id": 5,
+    "name": "Goldilocks",
+    "type": "kitten",
+    "hunger": 20,
+    "happiness": 20,
+    "adopted": true,
+    "adoptedBy": 5
+  },
+  {
+    "id": 6,
+    "name": "Crookshanks",
+    "type": "kitten",
+    "hunger": 0,
+    "happiness": 60,
+    "adopted": true,
+    "adoptedBy": 6
+  },
+  {
+    "id": 7,
+    "name": "Blondie",
+    "type": "puppy",
+    "hunger": 0,
+    "happiness": 20,
+    "adopted": true,
+    "adoptedBy": 4
+  },
+  {
+    "id": 8,
+    "name": "Slipper",
+    "type": "puppy",
+    "hunger": 20,
+    "happiness": 20,
+    "adopted": true,
+    "adoptedBy": 7
+  }
 ]
