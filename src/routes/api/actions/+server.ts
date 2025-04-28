@@ -6,6 +6,36 @@ import { canAfford, feedPet, returnPet, toyPet } from "$lib/helpers";
 
 const usersPath = path.resolve('static/data/users.json');
 const petsPath = path.resolve('static/data/pets.json');
+const logsPath = path.resolve('static/data/log.json');
+
+// Helper function to log actions
+async function logAction(action: string, userId: number, petId: number) {
+	try {
+		let logs = [];
+
+		// Check if logs file exists and is not empty
+		try {
+			const logfile = await readFile(logsPath, 'utf-8');
+			logs = JSON.parse(logfile);
+		} catch (err) {
+			// If file doesn't exist or is empty, start with empty array
+			logs = [];
+		}
+
+		const newLog = {
+			action,
+			userId,
+			petId,
+			timestamp: new Date().toISOString()
+		};
+
+		logs.push(newLog);
+
+		await writeFile(logsPath, JSON.stringify(logs, null, 2), 'utf-8');
+	} catch (err) {
+		console.error('Failed to write to logs:', err);
+	}
+}
 
 export const POST: RequestHandler = async ({ request }) => {
 	// Parse incoming request body
