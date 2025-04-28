@@ -1,11 +1,7 @@
 import type {Pet, User} from './types';
 
 export function canAfford(user: User, cost : number) {
-if(user.budget >= cost){
-    return true;
-}else{
-    return false;
-}
+return user.budget >= cost;
 }
 
 export function feedPet(pet: Pet) {
