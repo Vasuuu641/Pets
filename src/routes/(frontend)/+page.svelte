@@ -2,8 +2,9 @@
     import { onMount } from 'svelte';
     import { currentUser } from '$lib/stores';
     import { goto } from '$app/navigation';
+    import { Pet } from '$lib/models/Pet';
 
-    let pets = [];
+    let pets: Pet[] = [];
     let petType: '' | 'puppy' | 'kitten' = '';
     let isLoading = false;
     let errorMessage = '';
@@ -18,9 +19,19 @@
                 errorMessage = 'Failed to load pets.';
                 return;
             }
-            pets = await res.json();
+
+            const data = await res.json();
+            pets = data.map((petData: Pet) => new Pet(
+                petData.id,
+                petData.name,
+                petData.type,
+                petData.adopted,
+                petData.adoptedBy,
+                petData.hunger,
+                petData.happiness
+            ));
         } catch (err) {
-            console.log(err);
+            console.error(err);
             errorMessage = 'Failed to load pets.';
         } finally {
             isLoading = false;
@@ -42,14 +53,17 @@
 
             if (!res.ok) throw new Error('Failed to adopt pet.');
 
-            // After adoption, manually update the pet list
-            pets = pets.map(pet =>
-                pet.id === petId ? { ...pet, adopted: true } : pet
-            );
+
+            pets = pets.map(pet => {
+                if (pet.id === petId) {
+                    pet.adopt(user.id);
+                }
+                return pet;
+            });
 
             await loadPets();
         } catch (err) {
-            console.log(err);
+            console.error(err);
             errorMessage = 'Failed to adopt the pet. Please try again later.';
         }
     }
