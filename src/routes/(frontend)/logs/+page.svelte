@@ -1,15 +1,40 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    let logs: any[] = [];
+    import { Log } from '$lib/services/Log';
+    import {goto} from "$app/navigation";
+
+    let logs: Log[] = [];
     let error = '';
 
     onMount(async () => {
         try {
-            const res = await fetch('/api/log'); // Adjusted endpoint
+            const res = await fetch('/api/log');
+
+            if (res.status === 401) {
+                goto('/login');
+                return;
+            }
+
+            if (res.status === 403) {
+                error = 'Access denied. Admins only.';
+                return;
+            }
+
             if (!res.ok) {
                 throw new Error(`Error fetching logs: ${res.statusText}`);
             }
-            logs = await res.json();
+
+            const rawLogs = await res.json();
+
+            logs = rawLogs.map((log: any) => new Log(
+                log.action,
+                log.userId,
+                log.petId,
+                log.timestamp,
+                log.userName,
+                log.petName
+            ));
+
         } catch (err) {
             if (err instanceof Error) {
                 error = err.message;
@@ -18,6 +43,7 @@
             }
         }
     });
+
 </script>
 
 <h1>Action Log</h1>
@@ -30,7 +56,7 @@
     <ul>
         {#each [...logs].reverse() as log}
             <li>
-                {log.timestamp} - {log.action} (User: {log.userName} on Pet: {log.petName})
+                {log.timestamp} — {log.getMessage()}
             </li>
         {/each}
     </ul>
