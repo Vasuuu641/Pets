@@ -9,6 +9,7 @@ export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const { item, userId } = await request.json();
 
+		//sets prices of each item
 		const prices: Record<string, number> = {
 			food: 5,
 			toy: 10,
@@ -23,12 +24,12 @@ export const POST: RequestHandler = async ({ request }) => {
 		const user = usersData.find((u: any) => u.id === userId);
 
 		if (!user) {
-			return new Response(JSON.stringify({ error: 'User not found.' }), { status: 404 });
+			return new Response(JSON.stringify({ error: 'Person not found.' }), { status: 404 });
 		}
 
 		const cost = prices[item];
 
-		// Check if enough budget
+		// Re - uses helpers.ts function to check the user budget
 		if (!canAfford(user,cost)) {
 			return new Response(JSON.stringify({ error: 'Not enough budget to buy this item.' }), { status: 400 });
 		}
