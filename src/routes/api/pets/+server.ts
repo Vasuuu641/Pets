@@ -32,6 +32,10 @@ export const POST: RequestHandler = async ({ request }) => {
 			id: newId,           // 🆔 Unique ID
 			name: input.name,
 			type: input.type,
+			hunger: input.hunger ?? 100,
+			happiness: input.happiness ?? 0,
+			adopted: false,                    // 🐾 Not adopted by default
+			adoptedBy: null                   // 👤 No owner yet
 		};
 
 		pets.push(new_pet);
