@@ -12,7 +12,8 @@
 
         filterAdoptedPets();
     }
-
+//Filter Adopted pets filters the pet of the current user using the list from the homepage.
+    //If the adoptedBy property in Pets matches the user.id of the user, then the pet is added to the list
     function filterAdoptedPets() {
         const user = get(currentUser);
         if (!user) return;
@@ -26,7 +27,7 @@
         } : u);
     }
 
-    // Action buttons logic
+    //handleAction function enables only 3 actions to be carried out on the particular pet the user has adopted
     async function handleAction(action: 'feed' | 'play' | 'return', petId: number) {
         const user = get(currentUser);
         if (!user) {
@@ -49,6 +50,9 @@
         }
     }
 
+    //feedPet function uses the handleAction function but only allows it to execute after
+    // checking whether the user has food or treats. If not, they are redirected to the shop
+    // before the action gets executed
     async function feedPet(petId: number) {
         const user = get(currentUser);
         if (!user) {
@@ -56,7 +60,7 @@
             return;
         }
 
-        // Check if inventory is initialized (it should be if the user is logged in)
+
         if (!user.inventory) {
             console.log('No inventory found for the user. Initializing inventory.');
             user.inventory = { food: 0, toy: 0, treat: 0 };  // Initialize inventory if not set
@@ -64,22 +68,26 @@
 
         // Check if food or treat is available, else redirect to shop
         if (user.inventory.food > 0) {
-            user.inventory.food--; // Decrease food count
+            user.inventory.food--;
             console.log('Fed pet with food');
+
         } else if (user.inventory.treat > 0) {
-            user.inventory.treat--; // Decrease treat count
+            user.inventory.treat--;
             console.log('Fed pet with treat');
+
         } else if (user.budget >= 5) {
             alert('You have no food or treats to feed your pet!');
-            await goto('/shop'); // Redirect to shop if no food/treat
-            return; // Early return to prevent further logic execution
+            await goto('/shop');
+            return;
+
         } else {
             alert('You don\'t have enough food, treats, or budget!');
-            await goto('/shop'); // Redirect to shop if no food/treat/budget
-            return; // Early return to prevent further logic execution
+            await goto('/shop');
+            return;
         }
 
         try {
+
             // Update the user's inventory on the server
             const res = await fetch('/api/updatedInventory', {
                 method: 'POST',
@@ -107,6 +115,9 @@
         }
     }
 
+
+    //playPet works similar to feedPet. Works by checking inventory for toy,
+    // updates inventory and based on available toys, allows the user to press the play button
     async function playpet(petId: number) {
         const user = get(currentUser);
         if (!user) {
@@ -114,19 +125,19 @@
             return;
         }
 
-        // Check if inventory is initialized (it should be if the user is logged in)
+
         if (!user.inventory) {
             console.log('No inventory found for the user. Initializing inventory.');
-            user.inventory = { food: 0, toy: 0, treat: 0 };  // Initialize inventory if not set
+            user.inventory = { food: 0, toy: 0, treat: 0 };
         }
 
         if (user.inventory.toy > 0) {
-            user.inventory.toy--; // Decrease food count
-            console.log('Fed pet with food');
+            user.inventory.toy--;
+            console.log('Played with Pet');
         } else {
             alert('You don\'t have enough toys to play!');
-            await goto('/shop'); // Redirect to shop if no food/treat/budget
-            return; // Early return to prevent further logic execution
+            await goto('/shop');
+            return;
         }
 
         try {
