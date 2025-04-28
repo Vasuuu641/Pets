@@ -1,8 +1,9 @@
-import type { RequestHandler } from '@sveltejs/kit';
-import bcrypt from 'bcrypt';
-import path from 'path';
+import { User } from '$lib/models/User';
 import { readFile, writeFile } from 'fs/promises';
-import type { User } from '$lib/types';
+import path from 'path';
+import type { RequestHandler } from '@sveltejs/kit';
+import type { User as UserType } from '$lib/models/User';
+import { Person } from "$lib/models/Person";
 
 const usersPath = path.resolve('static/data/users.json');
 
@@ -12,7 +13,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		// Read existing users
 		const file: string = await readFile(usersPath, 'utf-8');
-		const user_data: User[] = JSON.parse(file);
+		const user_data: UserType[] = JSON.parse(file);
 
 		// Check for existing user by name
 		const existingUser = user_data.find(user => user.name === name);
@@ -23,31 +24,24 @@ export const POST: RequestHandler = async ({ request }) => {
 			);
 		}
 
-		// Hash the password
-		const hashedPassword = await bcrypt.hash(password, 10);
+		// Create the new person (base user) using the static method from Person
+		const newPerson = await Person.createUser(name, password); // This returns a Person instance
 
-		// Generate a new unique ID (auto-increment based on the last user's id)
-		const newId = user_data.length > 0 ? Math.max(...user_data.map((u: any) => u.id)) + 1 : 1;
+		// Convert the Person instance to a User instance for additional functionality
+		const newUser = new User(
+			newPerson.id,
+			newPerson.name,
+			newPerson.passwordHash, // Access passwordHash
+			newPerson.adoptedPets,
+			newPerson.role,
+			newPerson.budget,
+			newPerson.inventory
+		);
 
-		// Create the new user object
-		const newUser: User = {
-			id: newId,
-			name,
-			passwordHash: hashedPassword,
-			adoptedPets: [],
-			role : "user",
-			budget : 100,
-			inventory : {
-				food : 0,
-				toy : 0,
-				treat : 0
-			}
-		};
-
-		// Add to users array
+		// Add the new User to the users array
 		user_data.push(newUser);
 
-		// Write updated users back to file
+		// Write updated users back to the file
 		await writeFile(usersPath, JSON.stringify(user_data, null, 2));
 
 		// Return success message
@@ -58,7 +52,6 @@ export const POST: RequestHandler = async ({ request }) => {
 			}),
 			{ status: 201 }
 		);
-
 
 	} catch (error) {
 		console.error(error);

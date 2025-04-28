@@ -1,12 +1,13 @@
 <script lang="ts">
-    import { currentUser } from '$lib/stores'; // Store for current user
-    import { goto } from '$app/navigation';   // Navigation function
+    import { currentUser } from '$lib/stores';
+    import { goto } from '$app/navigation';
+    import { writable } from 'svelte/store';
 
-    let name = '';         // For username input
-    let password = '';     // For password input
-    let error = '';        // For showing error messages
+    let name = '';
+    let password = '';
+    let error = writable('');
 
-    // Login handler function
+   //This function handles the login functionality by calling the backend +server.ts for api/auth/login
     async function handleLogin() {
         try {
             const res = await fetch('/api/auth/login', {
@@ -18,24 +19,23 @@
             const data = await res.json();
 
             if (!res.ok) {
-                // Login failed, show error message
-                error = data.error || 'Login failed';
+                error.set(data.error || 'Login failed');
                 return;
             }
 
-            // Successful login, store user info in the store
-            currentUser.set(data.user);
 
-            // Redirect to appropriate page based on user role
+            currentUser.set(data.user);//stores the current user to the user that logs in until logged out
+
+
             if (data.user.role === 'admin') {
-                goto('/admin'); // Redirect to admin page
+                goto('/admin');
             } else {
-                goto('/dashboard'); // Redirect to dashboard
+                goto('/dashboard');
             }
 
         } catch (e) {
             console.error('Login failed', e);
-            error = 'Login request failed.';
+            error.set('Login request failed.');
         }
     }
 </script>
@@ -48,8 +48,8 @@
     <button type="submit">Login</button>
 </form>
 
-{#if error}
-    <p style="color: red;">{error}</p>
+{#if $error}
+    <p style="color: red;">{$error}</p>
 {/if}
 
 <p>Don't have an account? <a href="/register">Register</a></p>

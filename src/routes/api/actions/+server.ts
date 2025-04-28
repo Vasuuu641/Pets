@@ -13,12 +13,12 @@ async function logAction(action: string, userId: number, petId: number) {
 	try {
 		let logs = [];
 
-		// Check if logs file exists and is not empty
+		// Checks to see if logFile does exist and isn't empty
 		try {
 			const logfile = await readFile(logsPath, 'utf-8');
 			logs = JSON.parse(logfile);
 		} catch (err) {
-			// If file doesn't exist or is empty, start with empty array
+			//Initializes an empty array if the file doesn't exist
 			logs = [];
 		}
 
@@ -62,7 +62,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 	if (!user) {
 		return new Response(
-			JSON.stringify({ error: 'User not found.' }),
+			JSON.stringify({ error: 'Person not found.' }),
 			{ status: 404, headers: { 'Content-Type': 'application/json' } }
 		);
 	}
@@ -107,7 +107,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			user.budget -= 20;
 
 			if (user.adoptedPets) {
-				user.adoptedPets = user.adoptedPets.filter(pid => pid !== pet.id);
+				user.adoptedPets = user.adoptedPets?.filter(p => p.id !== pet.id) ?? [];
 			}
 			await logAction('return', userId, petId); // log it
 			break;
@@ -116,15 +116,15 @@ export const POST: RequestHandler = async ({ request }) => {
 			return new Response(JSON.stringify({ error: 'Unknown action' }), { status: 400 });
 	}
 
-	// Update the user data after the action is taken
+	// Updating the user data and re - writing the data
 	const updatedUserData = user_data.map((u) => (u.id === userId ? user : u));
 	await writeFile(usersPath, JSON.stringify(updatedUserData, null, 2), 'utf-8');
 
-	// Update the pets data if the pet's status has changed
+	//Does the same for pets - updates the data
 	const updatedPetData = pet_data.map((p) => (p.id === petId ? pet : p));
 	await writeFile(petsPath, JSON.stringify(updatedPetData, null, 2), 'utf-8');
 
-	// Respond with success and the updated user and pet
+	// Success message if all goes well
 	return new Response(
 		JSON.stringify({ success: true, updatedUser: user, updatedPet: pet }),
 		{ status: 200, headers: { 'Content-Type': 'application/json' } }

@@ -1,10 +1,10 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import bcrypt from 'bcrypt';
 import path from 'path';
 import { readFile } from 'fs/promises';
-import type { User } from '$lib/types';
-import { serialize } from 'cookie';
 import jwt from 'jsonwebtoken';
+import { Person } from '$lib/models/Person';
+import { User } from '$lib/models/User';
+import { Admin } from '$lib/models/Admin';
 
 const usersPath = path.resolve('static/data/users.json');
 
@@ -12,21 +12,56 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 	try {
 		const { name, password } = await request.json();
 
-		// Read user data
+		//Reads what is already in users.json
 		const file: string = await readFile(usersPath, 'utf-8');
-		const user_data: User[] = JSON.parse(file);
+		let user_data: Person[];
+
+		try {
+			user_data = JSON.parse(file); // Parses users.json
+		} catch (err) {
+			console.error('Error parsing users.json:', err);
+			return new Response(JSON.stringify({ error: 'Failed to read user data.' }), {
+				status: 500,
+			});
+		}
 
 		// Find the user by name
 		const user = user_data.find(user => user.name === name);
 
 		if (!user) {
-			return new Response(JSON.stringify({ error: 'User not found or name mismatch' }), {
+			return new Response(JSON.stringify({ error: 'Person not found or name mismatch' }), {
 				status: 404,
 			});
 		}
 
-		// Compare password with hash
-		const isMatch = await bcrypt.compare(password, user.passwordHash);
+		// Create the correct user instance based on the role
+		let userInstance: Person;
+
+		if (user.role === 'admin') {
+			// If the user is an admin, instantiate the Admin class
+			userInstance = new Admin(
+				user.id,
+				user.name,
+				user.passwordHash,
+				user.adoptedPets,
+				user.role,
+				user.budget,
+				user.inventory
+			);
+		} else {
+			userInstance = new User(
+				user.id,
+				user.name,
+				user.passwordHash,
+				user.adoptedPets,
+				user.role,
+				user.budget,
+				user.inventory
+			);
+		}
+
+		// Use the verifyPassword method
+		const isMatch = await userInstance.verifyPassword(password);
 
 		if (!isMatch) {
 			return new Response(JSON.stringify({ error: 'Invalid password' }), {
@@ -41,7 +76,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			{ expiresIn: '1h' }
 		);
 
-		//Set cookie with user info
+		// Set cookie with user info
 		cookies.set('session', token, {
 			path: '/',
 			httpOnly: true,
@@ -49,7 +84,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 			secure: process.env.NODE_ENV === 'production', // Ensure secure in production
 			maxAge: 60 * 60 * 24 // 1 day
 		});
-
 
 		// Success response
 		return new Response(

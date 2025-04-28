@@ -1,19 +1,23 @@
 [
   {
-    "id": 1,
-    "name": "admin",
-    "passwordHash": "$2b$10$Rma25OLP2wD1fkj8bbgRaeAmI.a8CKsVx86qqj59LXyiWdzHgQyPG",
+    "id": 1745874798485,
+    "name": "admin1",
+    "passwordHash": "$2b$10$LcTEAnT.TNJqxGQqYi4JROppSSZgHTa3.ZDscSFP2wKWa1jdjum7e",
     "adoptedPets": [],
     "role": "admin",
-    "budget": 100
+    "budget": 100,
+    "inventory": {
+      "food": 0,
+      "toy": 0,
+      "treat": 0
+    }
   },
   {
-    "id": 2,
-    "name": "vasu",
-    "passwordHash": "$2b$10$BycvnxCXHQF8swknK2azLuVtU0ZKlyVD5EEqXC1TSoIlYeiac1lTG",
+    "id": 1745875003248,
+    "name": "Vasundhara",
+    "passwordHash": "$2b$10$83xvtzIAxe5imisrpPNgUeOFewHkgdDSyQ.WfoB/c/xPiIDhPeLo2",
     "adoptedPets": [
-      3,
-      2
+      1
     ],
     "role": "user",
     "budget": 50,
@@ -24,75 +28,40 @@
     }
   },
   {
-    "id": 3,
-    "name": "Indira",
-    "passwordHash": "$2b$10$.suu7lmeRNTutfIX5OYjweZSRv.s9qnKUJwJoerb4Mn2ZqSvNjT2C",
+    "id": 1745879480582,
+    "name": "Ranjan",
+    "passwordHash": "$2b$10$Rc2dLOjhZsgzfZnToC.As.YqretuS7130B1Hg3/36Qpfyatg0aq9K",
+    "adoptedPets": [],
+    "role": "user",
+    "budget": 100,
+    "inventory": {
+      "food": 0,
+      "toy": 0,
+      "treat": 0
+    }
+  },
+  {
+    "id": 1745879903041,
+    "name": "Lakshmi",
+    "passwordHash": "$2b$10$IJRldWc9ERSQysl3f1esWe2Ehhp3K21/LXdTgL0u4SJNkYFTDUqVC",
     "adoptedPets": [
-      1,
-      4
+      1
     ],
     "role": "user",
-    "budget": 5,
+    "budget": 35,
     "inventory": {
-      "food": 2,
-      "toy": 1,
+      "food": 0,
+      "toy": 0,
       "treat": 1
     }
   },
   {
-    "id": 4,
-    "name": "Lakshmi",
-    "passwordHash": "$2b$10$A3zWg64Ac3iMGzHWJi4SV.h84fjnjCJokIa0b39mTIMApqMWAJDka",
-    "adoptedPets": [
-      7
-    ],
+    "id": 1745880116108,
+    "name": "Indira",
+    "passwordHash": "$2b$10$0KnsxtfS5ynditFvXVp/nuzSeeBViZRJxUu48zSG8Ic.ewp.xUdga",
+    "adoptedPets": [],
     "role": "user",
-    "budget": 70,
-    "inventory": {
-      "food": 0,
-      "toy": 1,
-      "treat": 0
-    }
-  },
-  {
-    "id": 5,
-    "name": "ranjan",
-    "passwordHash": "$2b$10$SsYcUdTd8PT884AyCXGinuJDgvteACkvR5YVYLW/SXw3smjH2oEeK",
-    "adoptedPets": [
-      5
-    ],
-    "role": "user",
-    "budget": 0,
-    "inventory": {
-      "food": 5,
-      "toy": 2,
-      "treat": 3
-    }
-  },
-  {
-    "id": 6,
-    "name": "ravi",
-    "passwordHash": "$2b$10$vf0KRSbAXSg673Lpkkea4.DEK3ZLZXEQ8V4yn6fRRGspb8ZBI2QYm",
-    "adoptedPets": [
-      6
-    ],
-    "role": "user",
-    "budget": 0,
-    "inventory": {
-      "food": 0,
-      "toy": 1,
-      "treat": 0
-    }
-  },
-  {
-    "id": 7,
-    "name": "lana",
-    "passwordHash": "$2b$10$AH2io.fxum3CWGuX/nbUYejUph6fMG8Mf2N9uDbNZB8FMBbmdBAWi",
-    "adoptedPets": [
-      8
-    ],
-    "role": "user",
-    "budget": 15,
+    "budget": 100,
     "inventory": {
       "food": 0,
       "toy": 0,

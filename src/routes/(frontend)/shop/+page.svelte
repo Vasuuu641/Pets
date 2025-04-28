@@ -60,7 +60,7 @@
             const data = await res.json();
             console.log('Fetched inventory:', data);
 
-            // ✅ Safely update currentUser
+
             currentUser.update(u => {
                 if (!u) return u;
                 return {
@@ -74,22 +74,13 @@
         }
     }
 
-
-    /*async function refreshUser() {
-        const res = await fetch('/api/auth/me', {
-            headers: { 'x-user-id': user.id.toString() }
-        });
-        const updatedUser = await res.json();
-        currentUser.set(updatedUser);
-    }*/
-
     onMount(() =>{
         showInventory();
     });
 </script>
 
 <main class="shop-container">
-    <h1>🛍️ Pet Shop</h1>
+    <h1>Pet Shop</h1>
 
     {#if error}
         <p class="error">{error}</p>
@@ -104,9 +95,9 @@
 
             <h3>Inventory:</h3>
             <ul>
-                <li>🍖 Food: {user.inventory?.food || 0}</li>
-                <li>🧸 Toy: {user.inventory?.toy || 0}</li>
-                <li>🍬 Treat: {user.inventory?.treat || 0}</li>
+                <li> Food: {user.inventory?.food || 0}</li>
+                <li> Toy: {user.inventory?.toy || 0}</li>
+                <li> Treat: {user.inventory?.treat || 0}</li>
             </ul>
         </div>
 

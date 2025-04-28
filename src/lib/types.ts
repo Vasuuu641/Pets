@@ -1,3 +1,8 @@
+//Kept types.ts to facilitate scalability and maintenance of the code
+//Allows programmers to view all the types easily and make changes if needed
+//Typescript automatically makes changes to other classes if the classes don't have
+// the same properties or if a new property has to be added
+
 export type Role = 'admin'|'user';
 
 export interface Pet {
@@ -18,7 +23,7 @@ export interface User {
 	adoptedPets: Pet[];
 	role: Role;
 	budget : number;
-	inventory: { // Corrected this line
+	inventory: {
 		food: number;
 		toy: number;
 		treat: number;

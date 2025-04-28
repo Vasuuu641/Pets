@@ -4,8 +4,8 @@
 
     let petName = '';
     let petType = '';
-    let petHunger = 0;  // Default as number
-    let petHappiness = 0;  // Default as number
+    let petHunger = 0;
+    let petHappiness = 0;
     let message = '';
     let success = '';
     let error = '';
@@ -14,7 +14,7 @@
 
     onMount(async() => {
         try{
-            const res = await fetch('/admin'); //Sends the GET request
+            const res = await fetch('/admin');
 
             if(res.status === 401) {
                 goto('/login');
@@ -41,7 +41,7 @@
         error = '';
 
         try {
-            // Ensure hunger and happiness are passed as numbers
+
             const response = await fetch(`/api/pets`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -62,8 +62,8 @@
                 //Clearing form
                 petName = '';
                 petType = '';
-                petHunger = 0;  // Default as number
-                petHappiness = 0;  // Default as number
+                petHunger = 0;
+                petHappiness = 0;
             }
             else
             {
