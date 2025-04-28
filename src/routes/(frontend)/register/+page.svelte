@@ -1,21 +1,30 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-    import { currentUser } from '$lib/stores';
+    import { goto } from '$app/navigation';
 
     let name = '';
     let password = '';
     let confirm_password = '';
     let error = '';
+    let isSubmitting = false;
+    let success = '';
 
-	async function handleRegister() {
+    async function handleRegister() {
+
+        error = '';
+
+        // Check if passwords match
+        if (password !== confirm_password) {
+            error = "Passwords don't match. Re-enter password.";
+            password = '';
+            confirm_password = '';
+            return;
+        }
+
+        //disables the submit button until credentials are checked and verified. Avoids multiple submissions
+        isSubmitting = true;
+
         try {
-            if(password !== confirm_password){
-                error = "Passwords don't match. Re - enter password";
-                password = '';
-                confirm_password = '';
-                return;
-            }
-
+            // Send the registration request
             const res = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -24,17 +33,22 @@
 
             const data = await res.json();
 
-            if (!res.ok) {
-                error = data.error || 'Registration failed';
-                return;
-            }
+            if (res.ok) {
+                success = data.message;
 
-            // Redirect to dashboard if registration successful
-            currentUser.set(data.user);
-            goto('/dashboard');
+                // After 2 seconds, user is redirected to login first
+                setTimeout(() => {
+                    goto('/login');
+                }, 2000);
+
+            } else {
+                error = data.error || 'Failed to register';
+            }
         } catch (err) {
             console.error(err);
             error = 'An error occurred during registration.';
+        } finally {
+            isSubmitting = false;
         }
     }
 
@@ -59,9 +73,9 @@
     </div>
 
     <div>
-        <label for="confirm-password">Confirm_password:</label>
+        <label for="confirm-password">Confirm Password:</label>
         <input id="confirm-password" type="password" bind:value={confirm_password} required />
     </div>
 
-    <button type="submit">Register</button>
+    <button type="submit" disabled={isSubmitting}>Register</button>
 </form>
