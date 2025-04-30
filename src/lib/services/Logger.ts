@@ -42,4 +42,30 @@ export class Logger {
             throw new Error('Failed to read logs.');
         }
     }
+
+    static async logAction(action: string, userId: number, petId: number) {
+        try {
+            let logs: Logs[] = [];
+
+            try {
+                const logfile = await fs.readFile(logPath, 'utf-8');
+                logs = JSON.parse(logfile);
+            } catch {
+                logs = [];
+            }
+
+            const newLog: Logs = {
+                action,
+                userId,
+                petId,
+                timestamp: new Date().toISOString()
+            };
+
+            logs.push(newLog);
+            await fs.writeFile(logPath, JSON.stringify(logs, null, 2), 'utf-8');
+        } catch (err) {
+            console.error('Failed to write to logs:', err);
+        }
+    }
+
 }

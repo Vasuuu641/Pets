@@ -76,11 +76,11 @@
       3
     ],
     "role": "user",
-    "budget": 100,
+    "budget": -15,
     "inventory": {
       "food": 0,
       "toy": 0,
-      "treat": 0
+      "treat": 1
     }
   }
 ]

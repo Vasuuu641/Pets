@@ -2,40 +2,10 @@ import type { RequestHandler } from '@sveltejs/kit';
 import path from 'path';
 import type { Pet, User } from "$lib/types";
 import { readFile, writeFile } from 'fs/promises';
-import { canAfford, feedPet, returnPet, toyPet } from "$lib/helpers";
+import {handlePetAction} from "$lib/controllers/petActions";
 
 const usersPath = path.resolve('static/data/users.json');
 const petsPath = path.resolve('static/data/pets.json');
-const logsPath = path.resolve('static/data/log.json');
-
-// Helper function to log actions
-async function logAction(action: string, userId: number, petId: number) {
-	try {
-		let logs = [];
-
-		// Checks to see if logFile does exist and isn't empty
-		try {
-			const logfile = await readFile(logsPath, 'utf-8');
-			logs = JSON.parse(logfile);
-		} catch (err) {
-			//Initializes an empty array if the file doesn't exist
-			logs = [];
-		}
-
-		const newLog = {
-			action,
-			userId,
-			petId,
-			timestamp: new Date().toISOString()
-		};
-
-		logs.push(newLog);
-
-		await writeFile(logsPath, JSON.stringify(logs, null, 2), 'utf-8');
-	} catch (err) {
-		console.error('Failed to write to logs:', err);
-	}
-}
 
 export const POST: RequestHandler = async ({ request }) => {
 	// Parse incoming request body
@@ -82,38 +52,13 @@ export const POST: RequestHandler = async ({ request }) => {
 		);
 	}
 
-	// Process the action
-	switch (action) {
-		case 'feed':
-			if (!canAfford(user, 5)) {
-				return new Response(JSON.stringify({ error: 'Not enough budget to feed.' }), { status: 400 });
-			}
-			feedPet(pet);
-			user.budget -= 5;
-			await logAction('feed', userId, petId); // log it
-			break;
+	const result = await handlePetAction(action, user, pet);
 
-		case 'play':
-			if (!canAfford(user, 10)) {
-				return new Response(JSON.stringify({ error: 'Not enough budget to play.' }), { status: 400 });
-			}
-			toyPet(pet);
-			user.budget -= 10;
-			await logAction('play', userId, petId); // log it
-			break;
-
-		case 'return':
-			returnPet(pet);
-			user.budget -= 20;
-
-			if (user.adoptedPets) {
-				user.adoptedPets = user.adoptedPets.filter(pid => pid !== pet.id);
-			}
-			await logAction('return', userId, petId); // log it
-			break;
-
-		default:
-			return new Response(JSON.stringify({ error: 'Unknown action' }), { status: 400 });
+	if (!result.success) {
+		return new Response(JSON.stringify({ error: result.error }), {
+			status: 400,
+			headers: { 'Content-Type': 'application/json' }
+		});
 	}
 
 	// Updating the user data and re - writing the data

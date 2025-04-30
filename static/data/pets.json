@@ -23,8 +23,8 @@
     "type": "kitten",
     "adopted": true,
     "adoptedBy": 1745994832848,
-    "hunger": 80,
-    "happiness": 10
+    "hunger": 40,
+    "happiness": 70
   },
   {
     "id": 4,

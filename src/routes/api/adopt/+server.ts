@@ -41,7 +41,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				{ status: 404, headers: { 'Content-Type': 'application/json' } }
 			);
 		}
-		
+
 
 		// If a user has adopted the pet, disable the adopt button and show adopted sign next to the pet name
 		if (user.adoptedPets.includes(petId)) {
