@@ -16,9 +16,7 @@
     "id": 1745875003248,
     "name": "Vasundhara",
     "passwordHash": "$2b$10$83xvtzIAxe5imisrpPNgUeOFewHkgdDSyQ.WfoB/c/xPiIDhPeLo2",
-    "adoptedPets": [
-      1
-    ],
+    "adoptedPets": [],
     "role": "user",
     "budget": 50,
     "inventory": {
@@ -48,18 +46,35 @@
       1
     ],
     "role": "user",
-    "budget": 35,
+    "budget": 15,
     "inventory": {
       "food": 0,
       "toy": 0,
-      "treat": 1
+      "treat": 0
     }
   },
   {
     "id": 1745880116108,
     "name": "Indira",
     "passwordHash": "$2b$10$0KnsxtfS5ynditFvXVp/nuzSeeBViZRJxUu48zSG8Ic.ewp.xUdga",
-    "adoptedPets": [],
+    "adoptedPets": [
+      2
+    ],
+    "role": "user",
+    "budget": 60,
+    "inventory": {
+      "food": 0,
+      "toy": 0,
+      "treat": 0
+    }
+  },
+  {
+    "id": 1745994832848,
+    "name": "Ravi",
+    "passwordHash": "$2b$10$0kbnzn.C8wpi1SNPUWwZ2eB74z0JYLJ6A7W/wsgjUJJUHl5M7Yh/O",
+    "adoptedPets": [
+      3
+    ],
     "role": "user",
     "budget": 100,
     "inventory": {

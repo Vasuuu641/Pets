@@ -3,26 +3,26 @@
     "id": 1,
     "name": "Blondie",
     "type": "puppy",
-    "adopted": false,
-    "adoptedBy": null,
-    "hunger": 10,
-    "happiness": 90
+    "adopted": true,
+    "adoptedBy": 1745879903041,
+    "hunger": 0,
+    "happiness": 100
   },
   {
     "id": 2,
     "name": "Lassie",
     "type": "puppy",
-    "adopted": false,
-    "adoptedBy": null,
-    "hunger": 100,
-    "happiness": 0
+    "adopted": true,
+    "adoptedBy": 1745880116108,
+    "hunger": 80,
+    "happiness": 20
   },
   {
     "id": 3,
     "name": "Blackie",
     "type": "kitten",
-    "adopted": false,
-    "adoptedBy": null,
+    "adopted": true,
+    "adoptedBy": 1745994832848,
     "hunger": 80,
     "happiness": 10
   },
@@ -43,5 +43,14 @@
     "adoptedBy": null,
     "hunger": 50,
     "happiness": 0
+  },
+  {
+    "id": 6,
+    "name": "Cookie",
+    "type": "kitten",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 40,
+    "happiness": 20
   }
 ]

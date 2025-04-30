@@ -15,4 +15,6 @@ export class Pet {
         this.adopted = true;
         this.adoptedBy = userId;
     }
+
+
 }
