@@ -107,7 +107,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			user.budget -= 20;
 
 			if (user.adoptedPets) {
-				user.adoptedPets = user.adoptedPets?.filter(p => p.id !== pet.id) ?? [];
+				user.adoptedPets = user.adoptedPets.filter(pid => pid !== pet.id);
 			}
 			await logAction('return', userId, petId); // log it
 			break;

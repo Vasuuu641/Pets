@@ -41,14 +41,7 @@ export const POST: RequestHandler = async ({ request }) => {
 				{ status: 404, headers: { 'Content-Type': 'application/json' } }
 			);
 		}
-
-		// If the pet is already adopted, return already adopted message
-		if (pet.adopted) {
-			return new Response(
-				JSON.stringify({ error: 'This pet has already been adopted.' }),
-				{ status: 400, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+		
 
 		// If a user has adopted the pet, disable the adopt button and show adopted sign next to the pet name
 		if (user.adoptedPets.includes(petId)) {
