@@ -88,5 +88,41 @@
     "userId": 1745880116108,
     "petId": 2,
     "timestamp": "2025-04-30T06:33:12.535Z"
+  },
+  {
+    "action": "feed",
+    "userId": 1745994832848,
+    "petId": 3,
+    "timestamp": "2025-04-30T06:53:08.500Z"
+  },
+  {
+    "action": "feed",
+    "userId": 1745994832848,
+    "petId": 3,
+    "timestamp": "2025-04-30T07:01:02.726Z"
+  },
+  {
+    "action": "play",
+    "userId": 1745994832848,
+    "petId": 3,
+    "timestamp": "2025-04-30T07:01:03.840Z"
+  },
+  {
+    "action": "play",
+    "userId": 1745994832848,
+    "petId": 3,
+    "timestamp": "2025-04-30T07:01:13.543Z"
+  },
+  {
+    "action": "play",
+    "userId": 1745994832848,
+    "petId": 3,
+    "timestamp": "2025-04-30T07:01:24.155Z"
+  },
+  {
+    "action": "return",
+    "userId": 1745994832848,
+    "petId": 3,
+    "timestamp": "2025-04-30T07:01:28.863Z"
   }
 ]
