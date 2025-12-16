@@ -42,22 +42,55 @@ A web-based **Pet Adoption Portal** designed to connect potential adopters with 
 ## 📁 Project Structure (Simplified)
 
 ```
-pet-adoption-portal/
-│── src/
-│   ├── components/
+PETS/
+├── .idea/                     # IDE configuration files
+├── src/
+│   ├── lib/
+│   │   ├── controllers/
+│   │   │   └── PetActions.ts   # Business logic for pet-related actions
+│   │   │
+│   │   ├── models/
+│   │   │   ├── Admin.ts        # Admin model
+│   │   │   ├── Person.ts       # Base class (OOP)
+│   │   │   ├── Pet.ts          # Pet model
+│   │   │   └── User.ts         # User model
+│   │   │
+│   │   ├── services/
+│   │   │   ├── Log.ts          # Log entity / logic
+│   │   │   └── Logger.ts       # Logging service
+│   │   │
+│   │   ├── helpers.ts          # Shared utility/helper functions
+│   │   ├── stores.ts           # Svelte stores (state management)
+│   │   └── types.ts            # Shared TypeScript types/interfaces
+│   │
 │   ├── routes/
-│   ├── model/
-│   │   ├── Pet.ts
-│   │   ├── Puppy.ts
-│   │   ├── Kitten.ts
-│   │   ├── Person.ts
-│   │   ├── User.ts
-│   │   └── Admin.ts
-│   ├── helpers/
-│   └── services/
-│── prisma/
-│── README.md
-```
+│   │   ├── (frontend)/         # Frontend routes (UI pages)
+│   │   │   ├── admin/
+│   │   │   ├── dashboard/
+│   │   │   ├── login/
+│   │   │   ├── logs/
+│   │   │   ├── register/
+│   │   │   └── shop/
+│   │   │
+│   │   ├── api/                # Backend API routes
+│   │   │   ├── actions/        # Generic action handlers
+│   │   │   ├── admin/          # Admin-specific endpoints
+│   │   │   ├── adopt/          # Pet adoption endpoints
+│   │   │   ├── auth/           # Authentication (login/register)
+│   │   │   ├── inventory/      # Pet inventory management
+│   │   │   ├── log/            # Logging endpoints
+│   │   │   ├── pets/           # Pet-related APIs
+│   │   │   ├── shop/           # Shop-related APIs
+│   │   │   └── updatedInventory/
+│   │   │
+│   │   ├── +layout.svelte      # Root layout
+│   │   └── +page.svelte        # Home page
+│   │
+│   ├── app.d.ts                # Global TypeScript declarations
+│   └── app.html                # HTML entry point
+│
+└── static/                     # Static assets (images, icons, etc.)
+
 
 ---
 
