@@ -52,5 +52,95 @@
     "adoptedBy": null,
     "hunger": 40,
     "happiness": 20
+  },
+  {
+    "id": 7,
+    "name": "Buddy",
+    "type": "puppy",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 30,
+    "happiness": 60
+  },
+  {
+    "id": 8,
+    "name": "Mittens",
+    "type": "kitten",
+    "adopted": true,
+    "adoptedBy": 1746000000000,
+    "hunger": 20,
+    "happiness": 90
+  },
+  {
+    "id": 9,
+    "name": "Shadow",
+    "type": "puppy",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 70,
+    "happiness": 40
+  },
+  {
+    "id": 10,
+    "name": "Whiskers",
+    "type": "kitten",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 60,
+    "happiness": 30
+  },
+  {
+    "id": 11,
+    "name": "Rusty",
+    "type": "puppy",
+    "adopted": true,
+    "adoptedBy": 1746011111111,
+    "hunger": 10,
+    "happiness": 100
+  },
+  {
+    "id": 12,
+    "name": "Cleo",
+    "type": "kitten",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 50,
+    "happiness": 50
+  },
+  {
+    "id": 13,
+    "name": "Rocky",
+    "type": "puppy",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 20,
+    "happiness": 70
+  },
+  {
+    "id": 14,
+    "name": "Luna",
+    "type": "kitten",
+    "adopted": true,
+    "adoptedBy": 1746022222222,
+    "hunger": 0,
+    "happiness": 95
+  },
+  {
+    "id": 15,
+    "name": "Daisy",
+    "type": "puppy",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 60,
+    "happiness": 30
+  },
+  {
+    "id": 16,
+    "name": "Simba",
+    "type": "kitten",
+    "adopted": false,
+    "adoptedBy": null,
+    "hunger": 40,
+    "happiness": 60
   }
 ]

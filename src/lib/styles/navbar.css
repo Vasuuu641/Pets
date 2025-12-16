@@ -1,0 +1,70 @@
+:root {
+  --bronze-spice: #cc5803ff;
+  --chocolate: #e2711dff;
+  --deep-saffron: #ff9505ff;
+  --amber-flame: #ffb627ff;
+  --sunflower-gold: #ffc971ff;
+  --text-dark: #333333;
+  --text-light: #ffffff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to right, var(--deep-saffron), var(--sunflower-gold));
+  padding: 1rem 2rem;
+  border-bottom: 3px solid var(--amber-flame);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: var(--amber-flame);
+  color: var(--text-light);
+}
+
+.nav-links button {
+  padding: 0.4rem 0.8rem;
+  background-color: var(--chocolate);
+  border: none;
+  border-radius: 6px;
+  color: var(--text-light);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.nav-links button:hover {
+  background-color: var(--bronze-spice);
+}
+
+.user-name {
+  margin-left: 0.5rem;
+  font-weight: bold;
+  color: var(--text-dark);
+}

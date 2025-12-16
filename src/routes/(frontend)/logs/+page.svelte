@@ -62,15 +62,3 @@
     </ul>
 {/if}
 
-<style>
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    li {
-        background-color: #f9f9f9;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 5px;
-    }
-</style>

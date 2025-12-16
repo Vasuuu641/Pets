@@ -1,0 +1,102 @@
+/* Container & Grid */
+.container {
+  padding: 2rem;
+}
+
+.pet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.8rem;
+  margin-top: 2rem;
+}
+
+/* Pet Card */
+.pet-card {
+  background: linear-gradient(145deg, var(--amber-flame), var(--sunflower-gold));
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Pet Image */
+.pet-image img {
+  width: 100%;
+  max-width: 140px;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+/* Pet Info */
+.pet-info h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.pet-info p {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Stat Bars */
+.stat-label {
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+}
+
+.stat-bar {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  height: 10px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  border-radius: 8px;
+}
+
+.fill.hunger {
+  background-color: var(--chocolate);
+}
+
+.fill.happiness {
+  background-color: var(--deep-saffron);
+}
+
+/* Adopt Button & Badge */
+.pet-info button {
+  padding: 0.5rem 1rem;
+  background-color: var(--bronze-spice);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.3s ease;
+}
+
+.pet-info button:hover {
+  background-color: var(--chocolate);
+}
+
+.adopted-badge {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  background-color: var(--sunflower-gold);
+  color: #fff;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}

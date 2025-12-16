@@ -1,5 +1,5 @@
 // src/lib/helpers/petActions.ts
-import { feedPet, returnPet, toyPet, canAfford } from '$lib/helpers';
+import { feedPet, toyPet, returnPet, canAfford } from '$lib/helpers';
 import { Logger } from '$lib/services/Logger';
 import type { Pet, User } from '$lib/types';
 

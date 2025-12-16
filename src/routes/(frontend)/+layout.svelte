@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { currentUser } from '$lib/stores';
 	import { goto } from '$app/navigation';
+    import '$lib/styles/navbar.css';
+
 
 	$: user = $currentUser;
 
@@ -10,55 +12,24 @@
 	}
 </script>
 
-<nav>
+<nav class="navbar">
+  <div class="logo">🐾 PetAdopt</div>
+  <div class="nav-links">
     <a href="/">Home</a>
     {#if user}
-        <a href="/dashboard">Dashboard</a>
-        <a href="/logs">Logs</a>
-        <a href="/shop">Shop</a>
-
-        {#if user.role === 'admin'}
-            <a href="/admin">Add a Pet</a>
-        {/if}
-
-        <button on:click={logout}>Logout</button>
-        <span class="user">{user.name}</span>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/logs">Logs</a>
+      <a href="/shop">Shop</a>
+      {#if user.role === 'admin'}
+        <a href="/admin">Add Pet</a>
+      {/if}
+      <button on:click={logout}>Logout</button>
+      <span class="user-name">{user.name}</span>
     {:else}
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
     {/if}
+  </div>
 </nav>
 
 <slot />
-
-<style>
-    nav {
-        background: #f2f2f2;
-        padding: 1rem;
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        border-bottom: 1px solid #ccc;
-    }
-
-    nav a {
-        text-decoration: none;
-        color: #333;
-    }
-
-    nav .user {
-        margin-left: auto;
-        font-weight: bold;
-    }
-
-    nav button {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: #0077cc;
-    }
-
-    nav button:hover {
-        text-decoration: underline;
-    }
-</style>

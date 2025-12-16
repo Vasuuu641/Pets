@@ -105,10 +105,3 @@
     <p style="color: red;">{error}</p>
 {/if}
 
-<style>
-    form {
-        display: grid;
-        gap: 0.75rem;
-        max-width: 300px;
-    }
-</style>
