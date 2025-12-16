@@ -1,7 +1,9 @@
+
 <script lang="ts">
     import { currentUser } from '$lib/stores';
     import { goto } from '$app/navigation';
     import { writable } from 'svelte/store';
+    import '$lib/styles/login.css';
 
     let name = '';
     let password = '';
@@ -40,16 +42,46 @@
     }
 </script>
 
-<h1>Login</h1>
 
-<form on:submit|preventDefault={handleLogin}>
-    <input type="text" bind:value={name} placeholder="Name" required />
-    <input type="password" bind:value={password} placeholder="Password" required />
-    <button type="submit">Login</button>
-</form>
+<div class="login-page">
+    <div class="login-card">
+        <h1>🐾 Welcome Back</h1>
+        <p class="subtitle">Log in to continue your pet adoption journey</p>
 
-{#if $error}
-    <p style="color: red;">{$error}</p>
-{/if}
+        <form on:submit|preventDefault={handleLogin}>
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input
+                    id="name"
+                    type="text"
+                    bind:value={name}
+                    placeholder="Enter your name"
+                    required
+                />         </div>
 
-<p>Don't have an account? <a href="/register">Register</a></p>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    bind:value={password}
+                    placeholder="Enter your password"
+                    required
+                />
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+        </form>
+
+        {#if $error}
+            <p class="error-message">{$error}</p>
+        {/if}
+
+        <p class="footer-text">
+            Don’t have an account?
+            <a href="/register">Register here</a>
+        </p>
+    </div>
+</div>

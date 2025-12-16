@@ -1,0 +1,129 @@
+:root {
+    --bronze-spice: #cc5803;
+    --chocolate: #e2711d;
+    --deep-saffron: #ff9505;
+    --amber-flame: #ffb627;
+    --sunflower-gold: #ffc971;
+    --text-dark: #3a2c1a;
+    --bg-light: #fffaf3;
+}
+
+/* ---------- Page Container ---------- */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--sunflower-gold), var(--amber-flame), var(--deep-saffron));
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ---------- Card ---------- */
+.login-card {
+    background: var(--bg-light);
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* ---------- Headings ---------- */
+.login-card h1 {
+    margin-bottom: 0.5rem;
+    color: var(--bronze-spice);
+    font-size: 2rem;
+}
+
+.subtitle {
+    margin-bottom: 2rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* ---------- Input Groups ---------- */
+.input-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 2px solid #eee;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--deep-saffron);
+    box-shadow: 0 0 0 3px rgba(255, 149, 5, 0.25);
+}
+
+/* ---------- Button ---------- */
+.login-btn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 12px;
+    border: none;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, var(--bronze-spice), var(--deep-saffron));
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, var(--bronze-spice), var(--deep-saffron)) !important; /* ensures gradient stays */
+    color: white; /* ensures text stays white */
+}
+
+/* ---------- Messages ---------- */
+.error-message {
+    margin-top: 1rem;
+    color: #c0392b;
+    font-size: 0.9rem;
+}
+
+.success-message {
+    margin-top: 1rem;
+    color: #2ecc71;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* ---------- Footer ---------- */
+.footer-text {
+    margin-top: 1.8rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.footer-text a {
+    color: var(--bronze-spice);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}
