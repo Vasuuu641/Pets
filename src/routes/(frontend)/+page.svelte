@@ -3,21 +3,24 @@
     import { currentUser } from '$lib/stores';
     import { goto } from '$app/navigation';
     import { Pet } from '$lib/models/Pet';
+    import { getRandomPetImage } from '$lib/data/petImage';
+    import { get } from 'svelte/store';
 
     // CSS
     import '$lib/styles/global.css';
     import '$lib/styles/Petcard.css';
     import '$lib/styles/filter.css';
 
-    // Image helper
-    import { getRandomPetImage } from '$lib/data/petImage';
-
     let pets: Pet[] = [];
     let petType: '' | 'puppy' | 'kitten' = '';
     let isLoading = false;
     let errorMessage = '';
-    let user = $currentUser;
 
+    // Subscribe to store safely
+    let user = get(currentUser);
+    currentUser.subscribe(value => user = value);
+
+    // Load pets safely
     async function loadPets() {
         isLoading = true;
         errorMessage = '';
@@ -25,39 +28,38 @@
         try {
             const res = await fetch(`/api/pets${petType ? `?type=${petType}` : ''}`);
             if (!res.ok) {
-                errorMessage = 'Failed to load pets.';
-                return;
+                throw new Error(`Failed to load pets: ${res.status}`);
             }
 
             const data = await res.json();
 
-            pets = data.map((petData: Pet) => {
-                const pet = new Pet(
-                    petData.id,
-                    petData.name,
-                    petData.type,
-                    petData.adopted,
-                    petData.adoptedBy,
-                    petData.hunger,
-                    petData.happiness,
-                    petData.imageUrl
+            pets = data.map((petData: any) => {
+                // Validate type
+                const type = petData.type && ['puppy', 'kitten'].includes(petData.type) ? petData.type : 'puppy';
+
+                return new Pet(
+                    petData.id ?? 0,
+                    petData.name ?? 'Unnamed',
+                    type,
+                    petData.adopted ?? false,
+                    petData.adoptedBy ?? null,
+                    petData.hunger ?? 100,
+                    petData.happiness ?? 0,
+                    petData.imageUrl ?? getRandomPetImage(type)
                 );
-
-                // attach stable image ONCE
-                pet.imageUrl = getRandomPetImage(pet.type as 'puppy' | 'kitten');
-
-                return pet;
             });
+
         } catch (err) {
-            console.error(err);
-            errorMessage = 'Failed to load pets.';
+            console.error('Failed to load pets:', err);
+            errorMessage = 'Failed to load pets. Please try again later.';
         } finally {
             isLoading = false;
         }
     }
 
+    // Adopt function (update frontend safely)
     async function adopt(petId: number) {
-        if (!user) {
+        if (!user || !user.id) {
             goto('/login');
             return;
         }
@@ -71,17 +73,15 @@
 
             if (!res.ok) throw new Error('Failed to adopt pet.');
 
+            // Update local pets array without reloading
             pets = pets.map(pet => {
-                if (pet.id === petId) {
-                    pet.adopt(user.id);
-                }
+                if (pet.id === petId) pet.adopt(user!.id);
                 return pet;
             });
 
-            await loadPets();
         } catch (err) {
-            console.error(err);
-            errorMessage = 'Failed to adopt the pet. Please try again later.';
+            console.error('Failed to adopt pet:', err);
+            errorMessage = 'Failed to adopt pet. Please try again later.';
         }
     }
 
@@ -121,37 +121,25 @@
 
                     <!-- Pet Info -->
                     <div class="pet-info">
-                        <h3>
-                            {pet.name}
-                            {pet.type === 'puppy' ? ' 🐶' : ' 🐱'}
-                        </h3>
-
+                        <h3>{pet.name} {pet.type === 'puppy' ? '🐶' : '🐱'}</h3>
                         <p class="pet-type">{pet.type}</p>
 
                         <!-- Hunger -->
                         <div class="stat-label">Hunger</div>
                         <div class="stat-bar">
-                            <div
-                                class="fill hunger"
-                                style="width: {pet.hunger}%"
-                            ></div>
+                            <div class="fill hunger" style="width: {pet.hunger}%"></div>
                         </div>
 
                         <!-- Happiness -->
                         <div class="stat-label">Happiness</div>
                         <div class="stat-bar">
-                            <div
-                                class="fill happiness"
-                                style="width: {pet.happiness}%"
-                            ></div>
+                            <div class="fill happiness" style="width: {pet.happiness}%"></div>
                         </div>
 
                         {#if pet.adopted}
                             <span class="adopted-badge">✅ Adopted</span>
                         {:else}
-                            <button on:click={() => adopt(pet.id)}>
-                                Adopt 🧡
-                            </button>
+                            <button on:click={() => adopt(pet.id)}>Adopt 🧡</button>
                         {/if}
                     </div>
                 </div>

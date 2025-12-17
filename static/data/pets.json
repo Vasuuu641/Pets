@@ -6,7 +6,8 @@
     "adopted": true,
     "adoptedBy": 1745879903041,
     "hunger": 0,
-    "happiness": 100
+    "happiness": 100,
+    "imageUrl": "/images/puppy1.jpeg"
   },
   {
     "id": 2,
@@ -15,7 +16,8 @@
     "adopted": true,
     "adoptedBy": 1745880116108,
     "hunger": 80,
-    "happiness": 20
+    "happiness": 20,
+    "imageUrl": "/images/puppy2.jpeg"
   },
   {
     "id": 3,
@@ -24,25 +26,28 @@
     "adopted": true,
     "adoptedBy": 1745994832848,
     "hunger": 40,
-    "happiness": 70
+    "happiness": 70,
+    "imageUrl": "/images/kitten1.jpeg"
   },
   {
     "id": 4,
     "name": "Garfield",
     "type": "kitten",
-    "adopted": false,
-    "adoptedBy": null,
+    "adopted": true,
+    "adoptedBy": 1765924841433,
     "hunger": 100,
-    "happiness": 0
+    "happiness": 0,
+    "imageUrl": "/images/kitten2.jpeg"
   },
   {
     "id": 5,
     "name": "Tiger",
     "type": "puppy",
-    "adopted": false,
-    "adoptedBy": null,
+    "adopted": true,
+    "adoptedBy": 1765924841433,
     "hunger": 50,
-    "happiness": 0
+    "happiness": 0,
+    "imageUrl": "/images/puppy3.jpeg"
   },
   {
     "id": 6,
@@ -51,7 +56,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 40,
-    "happiness": 20
+    "happiness": 20,
+    "imageUrl": "/images/kitten3.jpeg"
   },
   {
     "id": 7,
@@ -60,7 +66,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 30,
-    "happiness": 60
+    "happiness": 60,
+    "imageUrl": "/images/puppy4.jpeg"
   },
   {
     "id": 8,
@@ -69,7 +76,8 @@
     "adopted": true,
     "adoptedBy": 1746000000000,
     "hunger": 20,
-    "happiness": 90
+    "happiness": 90,
+    "imageUrl": "/images/kitten4.jpeg"
   },
   {
     "id": 9,
@@ -78,7 +86,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 70,
-    "happiness": 40
+    "happiness": 40,
+    "imageUrl": "/images/puppy5.jpeg"
   },
   {
     "id": 10,
@@ -87,7 +96,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 60,
-    "happiness": 30
+    "happiness": 30,
+    "imageUrl": "/images/kitten5.jpeg"
   },
   {
     "id": 11,
@@ -96,7 +106,8 @@
     "adopted": true,
     "adoptedBy": 1746011111111,
     "hunger": 10,
-    "happiness": 100
+    "happiness": 100,
+    "imageUrl": "/images/puppy6.jpeg"
   },
   {
     "id": 12,
@@ -105,7 +116,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 50,
-    "happiness": 50
+    "happiness": 50,
+    "imageUrl": "/images/kitten6.jpeg"
   },
   {
     "id": 13,
@@ -114,7 +126,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 20,
-    "happiness": 70
+    "happiness": 70,
+    "imageUrl": "/images/puppy7.jpeg"
   },
   {
     "id": 14,
@@ -123,7 +136,8 @@
     "adopted": true,
     "adoptedBy": 1746022222222,
     "hunger": 0,
-    "happiness": 95
+    "happiness": 95,
+    "imageUrl": "/images/kitten7.jpeg"
   },
   {
     "id": 15,
@@ -132,7 +146,8 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 60,
-    "happiness": 30
+    "happiness": 30,
+    "imageUrl": "/images/puppy8.jpeg"
   },
   {
     "id": 16,
@@ -141,6 +156,7 @@
     "adopted": false,
     "adoptedBy": null,
     "hunger": 40,
-    "happiness": 60
+    "happiness": 60,
+    "imageUrl": "/images/kitten8.jpeg"
   }
 ]

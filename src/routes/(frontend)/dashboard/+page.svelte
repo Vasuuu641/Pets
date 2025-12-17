@@ -3,12 +3,32 @@
     import { currentUser, pets } from '$lib/stores';
     import { get } from 'svelte/store';
     import { goto } from '$app/navigation';
+    import { Pet } from '$lib/models/Pet';
+    import { getRandomPetImage } from '$lib/data/petImage';
+
+    //CSS
+    import '$lib/styles/global.css';
+    import '$lib/styles/Petcard.css';
+    
 
     // Load pets from backend on mount
     async function loadPets() {
         const res = await fetch('/api/pets');
         const petsData = await res.json();
-        pets.set(petsData);
+        
+        // Convert each JSON object into a Pet instance
+    const petInstances = petsData.map((p: any) => new Pet(
+        p.id,
+        p.name,
+        p.type,
+        p.adopted,
+        p.adoptedBy ?? null,
+        p.hunger,
+        p.happiness,
+        p.imageUrl ?? getRandomPetImage(p.type)
+    ));
+
+    pets.set(petInstances);
 
         filterAdoptedPets();
     }
@@ -177,17 +197,38 @@
 <h1>Welcome, {$currentUser?.name}</h1>
 
 {#if $currentUser && $currentUser.adoptedPets && $currentUser.adoptedPets.length > 0}
-    <h2>Your Adopted Pets</h2>
-    <ul>
+    <h2 class="section-title">🐾 Your Adopted Pets</h2>
+
+    <div class="pet-grid">
         {#each $currentUser.adoptedPets as pet}
-            <li>{pet.name}</li>
-            Hunger: {pet.hunger}/100<br>
-            Happiness: {pet.happiness}/100<br>
-            <button on:click={() => feedPet(pet.id)}>Feed</button>
-            <button on:click={() => playpet(pet.id)}>Play</button>
-            <button on:click={() => handleAction('return', pet.id)}>Return</button>
+            <div class="pet-card">
+                <div class="pet-image">
+                        <img src={pet.imageUrl} alt={pet.name} />
+                    </div>
+                <div class="pet-info">
+                    <h3>{pet.name} {pet.type === 'puppy' ? '🐶' : '🐱'}</h3>
+
+                    <!-- Hunger -->
+                    <div class="stat-label">Hunger</div>
+                    <div class="stat-bar">
+                        <div class="fill hunger" style="width: {pet.hunger}%"></div>
+                    </div>
+
+                    <!-- Happiness -->
+                    <div class="stat-label">Happiness</div>
+                    <div class="stat-bar">
+                        <div class="fill happiness" style="width: {pet.happiness}%"></div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="pet-actions">
+                        <button class="action-btn feed" on:click={() => feedPet(pet.id)}>🍖 Feed</button>
+                        <button class="action-btn play" on:click={() => playpet(pet.id)}>🎾 Play</button>
+                        <button class="action-btn return" on:click={() => handleAction('return', pet.id)}>↩ Return</button>
+                    </div>
+                </div>
+            </div>
         {/each}
-    </ul>
-{:else}
-    <p>You haven't adopted any pets yet.</p>
+    </div>
 {/if}
+

@@ -82,5 +82,21 @@
       "toy": 0,
       "treat": 1
     }
+  },
+  {
+    "id": 1765924841433,
+    "name": "vasu",
+    "passwordHash": "$2b$10$vvTzKi0D7tOabZE2TrVHTOFT6it9lWQ7h8VgYHiV4nfBUc3NnnudG",
+    "adoptedPets": [
+      4,
+      5
+    ],
+    "role": "user",
+    "budget": 100,
+    "inventory": {
+      "food": 0,
+      "toy": 0,
+      "treat": 0
+    }
   }
 ]

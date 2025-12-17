@@ -3,7 +3,7 @@ export class Pet {
     constructor(
         public id: number,
         public name: string,
-        public type: string,
+        public type: 'puppy' | 'kitten',
         public adopted: boolean,
         public adoptedBy: number | null,
         public hunger: number,

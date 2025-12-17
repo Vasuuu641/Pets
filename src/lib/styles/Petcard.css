@@ -50,13 +50,12 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background: var(--color-10);
+  background: var(--bronze-spice) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  color: white;
 }
 
-button:disabled {
-  background-color: var(--color-3);
-  cursor: not-allowed;
-}
 
 .text-green {
   color: var(--success-color);
@@ -85,11 +84,11 @@ button:disabled {
 }
 
 .fill.hunger {
-  background-color: var(--color-9);
+  background-color: var(--chocolate);
   height: 100%;
 }
 
 .fill.happiness {
-  background-color: var(--color-5);
+  background-color: var(--deep-saffron);
   height: 100%;
 }

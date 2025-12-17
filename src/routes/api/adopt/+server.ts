@@ -1,81 +1,94 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import path from 'path';
 import { readFile, writeFile } from 'fs/promises';
-import type { User, Pet } from '$lib/types'; // Import relevant types
+import { Pet } from '$lib/models/Pet';
+import type { User } from '$lib/types';
 
-const usersPath = path.resolve('static/data/users.json');
-const petsPath = path.resolve('static/data/pets.json');
+const usersPath = path.join(process.cwd(), 'static/data/users.json');
+const petsPath = path.join(process.cwd(), 'static/data/pets.json');
 
 export const POST: RequestHandler = async ({ request }) => {
-	try {
-		const { petId, userId } = await request.json();
+  try {
+    const { petId, userId } = await request.json();
 
-		// Validate the userId and petId
-		if (!userId || !petId) {
-			return new Response(
-				JSON.stringify({ error: 'Missing petId or userId.' }),
-				{ status: 400, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+    if (!petId || !userId) {
+      return new Response(
+        JSON.stringify({ error: 'Missing petId or userId.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-		// Load users and pets data
-		const usersData = await readFile(usersPath, 'utf-8');
-		const users: User[] = JSON.parse(usersData); // Use the User type
-		const petsData = await readFile(petsPath, 'utf-8');
-		const pets: Pet[] = JSON.parse(petsData); // Use the Pet type
+    // Load users and pets
+    const usersRaw = await readFile(usersPath, 'utf-8');
+    const petsRaw = await readFile(petsPath, 'utf-8');
 
-		// Find the user and pet
-		const user = users.find((user: User) => user.id === userId);
-		const pet = pets.find((pet: Pet) => pet.id === petId);
+    const users: User[] = JSON.parse(usersRaw);
+    const petsData: any[] = JSON.parse(petsRaw);
 
-		if (!user) {
-			return new Response(
-				JSON.stringify({ error: 'User not found.' }),
-				{ status: 404, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+    // Convert pets to class instances
+    const pets: Pet[] = petsData.map(
+      p =>
+        new Pet(
+          p.id,
+          p.name,
+          p.type,
+          p.adopted ?? false,
+          p.adoptedBy ?? null,
+          p.hunger ?? 100,
+          p.happiness ?? 0,
+          p.imageUrl ?? null
+        )
+    );
 
-		if (!pet) {
-			return new Response(
-				JSON.stringify({ error: 'Pet not found.' }),
-				{ status: 404, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+    const user = users.find(u => u.id === userId);
+    const pet = pets.find(p => p.id === petId);
 
+    if (!user) {
+      return new Response(
+        JSON.stringify({ error: 'User not found.' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-		// If a user has adopted the pet, disable the adopt button and show adopted sign next to the pet name
-		if (user.adoptedPets.includes(petId)) {
-			return new Response(
-				JSON.stringify({ error: 'User has already adopted this pet.' }),
-				{ status: 400, headers: { 'Content-Type': 'application/json' } }
-			);
-		}
+    if (!pet) {
+      return new Response(
+        JSON.stringify({ error: 'Pet not found.' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-		// Mark the pet as adopted
-		pet.adopted = true;
-		pet.adoptedBy = userId;
+    // Initialize adoptedPets if missing
+    user.adoptedPets = user.adoptedPets || [];
 
+    if (user.adoptedPets.includes(petId)) {
+      return new Response(
+        JSON.stringify({ error: 'User has already adopted this pet.' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
 
-		// Update the pet list in the pets.json file
-		await writeFile(petsPath, JSON.stringify(pets, null, 2));
+    // Mark pet as adopted
+    pet.adopt(userId);
 
-		// Add the pet to the user's adopted pets list
-		user.adoptedPets.push(petId);
+    // Add pet to user's adopted list
+    user.adoptedPets.push(petId);
 
-		// Update the user list in the users.json file
-		await writeFile(usersPath, JSON.stringify(users, null, 2));
+    // Save back to JSON
+    await writeFile(
+      petsPath,
+      JSON.stringify(pets, (_, v) => (v instanceof Pet ? { ...v } : v), 2)
+    );
+    await writeFile(usersPath, JSON.stringify(users, null, 2));
 
-
-		return new Response(
-			JSON.stringify({ message: 'Pet adopted successfully.' }),
-			{ status: 200, headers: { 'Content-Type': 'application/json' } }
-		);
-
-	} catch (err) {
-		console.error('Error during adoption:', err);
-		return new Response(
-			JSON.stringify({ error: 'An error occurred while processing the adoption.' }),
-			{ status: 500, headers: { 'Content-Type': 'application/json' } }
-		);
-	}
+    return new Response(
+      JSON.stringify({ message: 'Pet adopted successfully.', pet }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
+  } catch (err) {
+    console.error('Error during adoption:', err);
+    return new Response(
+      JSON.stringify({ error: 'An error occurred while processing the adoption.' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 };

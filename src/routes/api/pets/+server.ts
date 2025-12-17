@@ -1,80 +1,117 @@
-import {readFile, writeFile} from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import { Pet } from '$lib/models/Pet';
 import type { RequestHandler } from '@sveltejs/kit';
+import { getRandomPetImage } from '$lib/data/petImage';
 
-const petsPath = path.resolve('static/data/pets.json');
+const petsPath = path.join(process.cwd(), 'static', 'data', 'pets.json');
 
-//GET method to load the pets to the homepage
+// Helper to safely parse JSON
+async function safeReadPets(): Promise<any[]> {
+    try {
+        const file = await readFile(petsPath, 'utf-8');
+        const data = JSON.parse(file);
+        if (!Array.isArray(data)) throw new Error('pets.json is not an array');
+        return data;
+    } catch (err) {
+        console.error('Failed to read pets.json:', err);
+        return [];
+    }
+}
+
+// GET handler: fetch pets
 export const GET: RequestHandler = async ({ url }) => {
-	const type = url.searchParams.get('type');
+    try {
+        const typeFilter = url.searchParams.get('type');
 
-	const file = await readFile(petsPath, 'utf-8');
-	const rawPets = JSON.parse(file);
-	const pets: Pet[] = rawPets.map((petData: Pet) => new Pet(
-		petData.id,
-		petData.name,
-		petData.type,
-		petData.adopted,
-		petData.adoptedBy,
-		petData.hunger,
-		petData.happiness
-	));
+        const rawPets = await safeReadPets();
 
-	//If a type is specified then filters the pets by type to display. If not, then no filter applied
-	const filtered_pets = type ? pets.filter(pet => pet.type === type) : pets;
+        const pets: Pet[] = rawPets.map((petData: any) => {
+            const type = petData.type && ['puppy', 'kitten'].includes(petData.type) ? petData.type : 'puppy';
+            return new Pet(
+                petData.id ?? 0,
+                petData.name ?? 'Unnamed',
+                type,
+                petData.adopted ?? false,
+                petData.adoptedBy ?? null,
+                petData.hunger ?? 100,
+                petData.happiness ?? 0,
+                petData.imageUrl ?? getRandomPetImage(type)
+            );
+        });
 
-	console.log('Filtering pets by type:', type);
+        const filteredPets = typeFilter
+            ? pets.filter(pet => pet.type === typeFilter)
+            : pets;
 
-	return new Response(JSON.stringify(filtered_pets));
+        return new Response(JSON.stringify(filteredPets), {
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+    } catch (err) {
+        console.error('GET /api/pets failed:', err);
+        return new Response(
+            JSON.stringify({ error: 'Failed to load pets!' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+    }
 };
 
-//POST enables the admin to add a new pet
+// POST handler: add new pet
 export const POST: RequestHandler = async ({ request }) => {
-	try {
-		const input = await request.json();
-		const file = await readFile(petsPath, 'utf-8');
-		const rawPets = JSON.parse(file);
-		const pets: Pet[] = rawPets.map((petData: Pet) => new Pet(
-			petData.id,
-			petData.name,
-			petData.type,
-			petData.adopted,
-			petData.adoptedBy,
-			petData.hunger,
-			petData.happiness
-		));
+    try {
+        const input = await request.json();
 
-		const newId = pets.length > 0 ? Math.max(...pets.map(p => p.id)) + 1 : 1;
+        const rawPets = await safeReadPets();
 
-		const new_pet = new Pet(
-			newId,
-			input.name,
-			input.type,
-			false,   // adopted
-			null,    // adoptedBy
-			input.hunger ?? 100,
-			input.happiness ?? 0
-		);
+        const pets: Pet[] = rawPets.map((petData: any) => {
+            const type = petData.type && ['puppy', 'kitten'].includes(petData.type) ? petData.type : 'puppy';
+            return new Pet(
+                petData.id ?? 0,
+                petData.name ?? 'Unnamed',
+                type,
+                petData.adopted ?? false,
+                petData.adoptedBy ?? null,
+                petData.hunger ?? 100,
+                petData.happiness ?? 0,
+                petData.imageUrl ?? getRandomPetImage(type)
+            );
+        });
 
-		pets.push(new_pet);
-		await writeFile(petsPath, JSON.stringify(pets, null, 2));
+        // Assign new ID
+        const newId = pets.length > 0 ? Math.max(...pets.map(p => p.id)) + 1 : 1;
 
-		return new Response(
-			JSON.stringify({ message: 'Pet added successfully!', pet: new_pet }),
-			{
-				status: 201,
-				headers: { 'Content-Type': 'application/json' }
-			}
-		);
-	} catch (err) {
-		console.error('Failed to add pet:', err);
-		return new Response(
-			JSON.stringify({ error: 'Failed to add pet!' }),
-			{
-				status: 500,
-				headers: { 'Content-Type': 'application/json' }
-			}
-		);
-	}
+        // Validate type
+        const type = input.type && ['puppy', 'kitten'].includes(input.type) ? input.type : 'puppy';
+
+        // Assign image if missing
+        const imageUrl = input.imageUrl ?? getRandomPetImage(type);
+
+        const newPet = new Pet(
+            newId,
+            input.name ?? 'Unnamed',
+            type,
+            false,      // adopted
+            null,       // adoptedBy
+            input.hunger ?? 100,
+            input.happiness ?? 0,
+            imageUrl
+        );
+
+        pets.push(newPet);
+
+        await writeFile(petsPath, JSON.stringify(pets, null, 2), 'utf-8');
+
+        return new Response(JSON.stringify({ message: 'Pet added successfully!', pet: newPet }), {
+            status: 201,
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+    } catch (err) {
+        console.error('POST /api/pets failed:', err);
+        return new Response(
+            JSON.stringify({ error: 'Failed to add pet!' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
+    }
 };

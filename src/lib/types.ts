@@ -13,7 +13,7 @@ export interface Pet {
 	adoptedBy: number | null;
 	hunger : number;
 	happiness : number;
-
+	imageUrl : string;
 }
 
 export interface User {

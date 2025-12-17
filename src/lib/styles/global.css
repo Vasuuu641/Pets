@@ -67,29 +67,24 @@
   border-radius: 8px;
 }
 
-.fill.hunger {
-  background-color: var(--chocolate);
-}
-
-.fill.happiness {
-  background-color: var(--deep-saffron);
-}
 
 /* Adopt Button & Badge */
 .pet-info button {
-  padding: 0.5rem 1rem;
-  background-color: var(--bronze-spice);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: background 0.3s ease;
+  background-color: var(--bronze-spice) !important;
 }
 
-.pet-info button:hover {
-  background-color: var(--chocolate);
-}
+/*.pet-info button:hover {
+  background-color: var(--chocolate) !important;
+  /* Add this to ensure no other styles override 
+  background: var(--chocolate) !important;
+}*/
+
+/*.pet-info button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    background: var(--chocolate) !important; 
+    color: white; 
+}*/
 
 .adopted-badge {
   display: inline-block;
