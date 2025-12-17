@@ -63,8 +63,8 @@
     "id": 7,
     "name": "Buddy",
     "type": "puppy",
-    "adopted": false,
-    "adoptedBy": null,
+    "adopted": true,
+    "adoptedBy": 1765924841433,
     "hunger": 30,
     "happiness": 60,
     "imageUrl": "/images/puppy4.jpeg"

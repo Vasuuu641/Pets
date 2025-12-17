@@ -89,7 +89,8 @@
     "passwordHash": "$2b$10$vvTzKi0D7tOabZE2TrVHTOFT6it9lWQ7h8VgYHiV4nfBUc3NnnudG",
     "adoptedPets": [
       4,
-      5
+      5,
+      7
     ],
     "role": "user",
     "budget": 100,

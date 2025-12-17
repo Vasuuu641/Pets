@@ -8,7 +8,7 @@
 
     //CSS
     import '$lib/styles/global.css';
-    import '$lib/styles/Petcard.css';
+    import '$lib/styles/dashboard.css';
     
 
     // Load pets from backend on mount
